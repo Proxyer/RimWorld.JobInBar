@@ -1,0 +1,42 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <JobInBar_NameColorButton>名前の色</JobInBar_NameColorButton>
+  <JobInBar_JobColorButton>役職の色</JobInBar_JobColorButton>
+  <JobInBar_ShowJobLabelFor>役職を表示</JobInBar_ShowJobLabelFor>
+  <JobInBar_Settings_Enabled>Mod有効化:</JobInBar_Settings_Enabled>
+  <JobInBar_Settings_Enabled_desc>何かがおかしなことになっている場合は,これを使ってModを完全に無効にします.</JobInBar_Settings_Enabled_desc>
+  <JobInBar_Settings_Positioning>ラベルの位置</JobInBar_Settings_Positioning>
+  <JobInBar_Settings_Ypos>垂直オフセット：</JobInBar_Settings_Ypos>
+  <JobInBar_Settings_Ydist>ラベル間の垂直オフセット：</JobInBar_Settings_Ydist>
+  <JobInBar_Settings_DrawBG>背景を描画：</JobInBar_Settings_DrawBG>
+  <JobInBar_Settings_DrawBG_desc>名前ラベルと同じように,役職の後ろに黒いボックスを描画します。</JobInBar_Settings_DrawBG_desc>
+  <JobInBar_Settings_Truncate>長いラベルを切り捨てる</JobInBar_Settings_Truncate>
+  <JobInBar_Settings_Truncate_desc>オフにすると,長い役職名が強制的に表示されます.見た目は醜いですが,あなたが状態かもしれません.</JobInBar_Settings_Truncate_desc>
+  <JobInBar_Settings_HideDrafted>徴兵時に非表示</JobInBar_Settings_HideDrafted>
+  <JobInBar_Settings_HideDrafted_desc>入植者がドラフトされたときに役職ラベルを非表示にします. Show-DrafteesWeaponのような入植者バーを変更する他Modと一緒に使うときに役立ちます.</JobInBar_Settings_HideDrafted_desc>
+  <JobInBar_Settings_OffsetWhenWeaponEquipped>武器装備時のラベルオフセット値</JobInBar_Settings_OffsetWhenWeaponEquipped>
+  <JobInBar_Settings_OffsetWhenWeaponEquipped_desc>問題のポーンに武器が装備されている場合,ラベルを移動するオフセット値です.\nModShowDrafteesWeaponを使用している場合,ラベルを武器表示の邪魔にならない位置に移動できます.</JobInBar_Settings_OffsetWhenWeaponEquipped_desc>
+  <JobInBar_Settings_Job>役職を描画する</JobInBar_Settings_Job>
+  <JobInBar_Settings_Job_desc>入植者の現在の役職を描画します.このModのメイン機能です.</JobInBar_Settings_Job_desc>
+  <JobInBar_Settings_CurrentJobHeader>以下の設定をオンにすると,マウスカーソルにポーンが現在実行している仕事を示すラベルが表示されます.\n\n注意:パフォーマンスに悪影響を及ぼす可能性があり</JobInBar_Settings_CurrentJobHeader>
+  <JobInBar_Settings_DrawCurrentJob>ポーンが実行中の仕事を表示する</JobInBar_Settings_DrawCurrentJob>
+  <JobInBar_Settings_DrawCurrentJob_desc>もし有効にすると,ポーンが現在実行中の仕事（例えば,清掃/製作/建設）のラベルが表示されます.\nラベルは,パフォーマンス対策と視覚的な混乱などから,マウスポインターが当てられたポーンに対してだけ表示されることに注意してください.</JobInBar_Settings_DrawCurrentJob_desc>
+  <JobInBar_Settings_CurrentJobLabelColor>現在の職業ラベルの色</JobInBar_Settings_CurrentJobLabelColor>
+  <JobInBar_Settings_DrawOnlyOnHover>マウスでホバー中だけラベルを表示する</JobInBar_Settings_DrawOnlyOnHover>
+  <JobInBar_Settings_DrawOnlyOnHover_desc>マウスが画面上の入植者一覧に現在カーソルが当たっているポーンのラベルだけを描画します.</JobInBar_Settings_DrawOnlyOnHover_desc>
+  <JobInBar_Settings_Role>イデオロギーのスペシャリストの役割を描画(可能な場合)</JobInBar_Settings_Role>
+  <JobInBar_Settings_Role_desc>Ideologyがインストールされている場合は,職種ラベルの下にイデオロギーカラーでスペシャリストの役割を描画します.</JobInBar_Settings_Role_desc>
+  <JobInBar_Settings_RoleColor>役割にイデオロギーカラーを使用する</JobInBar_Settings_RoleColor>
+  <JobInBar_Settings_RoleColor_desc>イデオロギーカラーがスペシャリストの役割の色で読みにくい場合や,目障りな場合はこれをオフにします.</JobInBar_Settings_RoleColor_desc>
+  <JobInBar_Settings_RoleColorAbility>能力のクールダウン゛完了して使用する準備ができている場合にだけ役割の色を使用します</JobInBar_Settings_RoleColorAbility>
+  <JobInBar_Settings_RoleColorAbility_desc>有効にすると,イデオロギーの役割の色は,役割の能力のクールダウンが完了して,能力を使用できる場合にだけ使用されます.それ以外の場合は,名前ラベルと同じ色になります.</JobInBar_Settings_RoleColorAbility_desc>
+  <JobInBar_Settings_Title>Royaltyの爵位を描画(利用可能な場合)</JobInBar_Settings_Title>
+  <JobInBar_Settings_Title_desc>Royaltyがインストールされている場合,ポーンが所有するRoyaltyの爵位を役職ラベルの下に描画します.</JobInBar_Settings_Title_desc>
+  <JobInBar_Settings_Alpha>ラベル全体の不透明度</JobInBar_Settings_Alpha>
+  <JobInBar_Settings_JobLabelColor>役職ラベルのデフォルト色</JobInBar_Settings_JobLabelColor>
+  <JobInBar_Settings_DefaultShow>デフォルトで役職ラベルを表示</JobInBar_Settings_DefaultShow>
+  <JobInBar_Settings_DefaultShow_desc>ゲームで役職ラベルを最初から表示させます.</JobInBar_Settings_DefaultShow_desc>
+  <JobInBar_Settings_DisplaySettingsLabel>表示設定</JobInBar_Settings_DisplaySettingsLabel>
+  <JobInBar_SettingsCategory>Job In Bar：入植者一覧の役職名</JobInBar_SettingsCategory>
+
+</LanguageData>
