@@ -1,106 +1,124 @@
 ﻿using System;
-using Verse;
 using RimWorld;
 using UnityEngine;
-using HarmonyLib;
 
-namespace JobInBar
+namespace JobInBar;
+
+public static class LabelDrawer
 {
-    public class LabelDrawer
+    public static Pawn? HoveredPawn;
+
+    /// <summary>
+    ///     Draws a custom label at the specified position with the specified text, color, and truncation options.
+    /// </summary>
+    /// <param name="pos">The position at which to draw the label.</param>
+    /// <param name="labelToDraw">The text of the label to draw.</param>
+    /// <param name="labelColor">The color of the label to draw.</param>
+    /// <param name="truncateToWidth">The maximum width, in pixels, of the label after truncation.</param>
+    /// <param name="truncate">A value indicating whether to truncate the label if it exceeds the specified width.</param>
+    /// <param name="drawBg"></param>
+    internal static void DrawCustomLabel(Vector2 pos, string labelToDraw, Color labelColor,
+        float truncateToWidth = 9999f, bool truncate = true, bool drawBg = true)
     {
-        // Method used to draw all custom labels
-        public static void DrawCustomLabel(Vector2 pos, string labelToDraw, Color labelColor, float truncateToWidth = 9999f, bool truncate = true)
+        // Save the current font and restore it after drawing the label
+        Text.Font = GameFont.Tiny;
+
+        if (truncate && Settings.TruncateLongLabels)
+            labelToDraw = LabelUtils.TruncateLabel(labelToDraw, truncateToWidth, Text.Font);
+
+        var pawnLabelNameWidth = Text.CalcSize(labelToDraw).x;
+
+        var rect = LabelUtils.GetLabelRect(pos, pawnLabelNameWidth);
+        var bgRect = LabelUtils.LabelBGRect(pos, pawnLabelNameWidth);
+
+        if (drawBg)
+            GUI.DrawTexture(bgRect, TexUI.GrayTextBG!);
+
+        GUI.color = labelColor;
+        Text.Font = GameFont.Tiny;
+        Widgets.Label(rect, labelToDraw);
+
+        // Reset the GUI color to white
+        GUI.color = Color.white;
+        Text.Anchor = TextAnchor.UpperLeft;
+        Text.Font = GameFont.Small;
+    }
+
+    public static void DrawLabels(Pawn colonist, Vector2 pos, ColonistBar bar, Rect rect,
+        float truncateToWidth = 9999f)
+    {
+        HoveredPawn = null;
+        var lineOffset =
+            new Vector2(0, Text.LineHeightOf(GameFont.Tiny) + Settings.ExtraOffsetPerLine); // 1.3+ only
+
+        // Apply position offsets
+        pos = new Vector2(pos.x, pos.y);
+        if (colonist.DrawAnyPermanentLabels(rect))
         {
-            //GameFont font2 = Text.Font;
-            Text.Font = GameFont.Tiny;
-            //Text.Font = font2;
-
-            if (truncate)
-                labelToDraw = LabelUtils.TruncateLabel(labelToDraw, truncateToWidth, Text.Font);
-
-            float pawnLabelNameWidth = Text.CalcSize(labelToDraw).x;
-
-            // calculate the sizes
-            Rect rect = LabelUtils.GetLabelRect(pos, pawnLabelNameWidth);
-            Rect bgRect = LabelUtils.GetLabelBGRect(pos, pawnLabelNameWidth);
-
-            if (Settings.DrawBG)
-                GUI.DrawTexture(bgRect, TexUI.GrayTextBG);
-
-            // Override the label color with the global opacity mod setting
-            labelColor.a = Settings.labelAlpha;
-
-            GUI.color = labelColor;
-            Text.Font = GameFont.Tiny;
-            Widgets.Label(rect, labelToDraw);
-
-            // Reset the gui drawing settings
-            GUI.color = Color.white;
-            Text.Anchor = TextAnchor.UpperLeft;
-        }
-
-        public static void DrawJobLabel(Vector2 pos, Pawn colonist, float truncateToWidth = 9999f)
-        {
-            string jobLabel = LabelUtils.GetJobLabel(colonist);
-
-            DrawCustomLabel(pos, jobLabel, LabelUtils.GetJobLabelColorForPawn(colonist), truncateToWidth);
-        }
-        public static void DrawIdeoRoleLabel(Vector2 pos, Pawn colonist, float truncateToWidth = 9999f)
-        {
-            string roleLabel = LabelUtils.GetIdeoRoleLabel(colonist);
-
-            DrawCustomLabel(pos, roleLabel, LabelUtils.GetIdeoLabelColorForPawn(colonist), truncateToWidth);
-        }
-        public static void DrawRoyalTitleLabel(Vector2 pos, Pawn colonist, float truncateToWidth = 9999f)
-        {
-            string titleLabel = LabelUtils.GetRoyalTitleLabel(colonist);
-
-            Color imperialColor = new Color(0.85f, 0.85f, 0.75f);
-
-            DrawCustomLabel(pos, titleLabel, imperialColor, truncateToWidth);
-        }
-
-        public static void DrawCurrentJobLabel(Vector2 pos, Pawn colonist, float truncateToWidth = 9999f)
-        {
-            string currentJob = colonist.GetJobDescription();
-
-            DrawCustomLabel(pos, currentJob, Settings.currentJobLabelColor, truncate:false);
-        }
-
-        public static void DrawLabels(Pawn colonist, Vector2 pos, ColonistBar bar, Rect rect, float truncateToWidth = 9999f)
-        {
-            Vector2 lineOffset = new Vector2(0, Text.LineHeightOf(GameFont.Tiny) + Settings.ExtraOffsetPerLine); // 1.3 only
-            // first check if any of the labels should be drawn at all (eg disabled in settings)
-            
-
-            if (LabelUtils.GetShouldDrawLabel(colonist, rect))
+            try
             {
-                // Apply position offsets
-                pos = new Vector2(pos.x, pos.y + LabelUtils.GetLabelPositionOffsetFor(colonist));
-                if (LabelUtils.GetShouldDrawJobLabel(colonist))
+                if (colonist.ShouldDrawJobLabel())
                 {
-                    LabelDrawer.DrawJobLabel(pos, colonist, truncateToWidth);
-                    pos += lineOffset;
-                }
-
-                if (LabelUtils.GetShouldDrawRoyalTitleLabel(colonist))
-                {
-                    LabelDrawer.DrawRoyalTitleLabel(pos, colonist, truncateToWidth);
-                    pos += lineOffset;
-                }
-
-                if (LabelUtils.GetShouldDrawIdeoRoleLabel(colonist))
-                {
-                    LabelDrawer.DrawIdeoRoleLabel(pos, colonist, truncateToWidth);
+                    DrawCustomLabel(pos, colonist.JobLabel(), colonist.JobLabelColor(), truncateToWidth,
+                        drawBg: Settings.DrawJobTitleBackground);
                     pos += lineOffset;
                 }
             }
-            if (Settings.DrawCurrentJob && Mouse.IsOver(rect))
+            catch (Exception e)
             {
-                pos += lineOffset;
-                LabelDrawer.DrawCurrentJobLabel(pos, colonist);
-                pos += lineOffset;
+                Log.Exception(e, "Job label", true);
             }
+
+            try
+            {
+                if (colonist.ShouldDrawRoyaltyLabel())
+                {
+                    DrawCustomLabel(pos, colonist.RoyaltyLabel(), Settings.RoyalTitleColor, truncateToWidth,
+                        drawBg: Settings.DrawRoyalTitleBackground);
+                    pos += lineOffset;
+                }
+            }
+            catch (Exception e)
+            {
+                Log.Exception(e, "Royalty label", true);
+            }
+
+            try
+            {
+                if (colonist.ShouldDrawIdeoLabel())
+                {
+                    DrawCustomLabel(pos, colonist.IdeoLabel(), colonist.IdeoLabelColor(), truncateToWidth,
+                        drawBg: Settings.DrawIdeoRoleBackground);
+                    pos += lineOffset;
+                }
+            }
+            catch (Exception e)
+            {
+                Log.Exception(e, "Ideology role label", true);
+            }
+        }
+
+        try
+        {
+            if (Settings.DrawCurrentTask && Mouse.IsOver(rect))
+            {
+#if !(v1_1 || v1_2 || v1_3) // RW 1.4 introduced the ShowWeaponsUnderPortraitMode pref
+                if (!Settings.MoveWeaponBelowCurrentTask)
+                    if ((Prefs.ShowWeaponsUnderPortraitMode == ShowWeaponsUnderPortraitMode.Always ||
+                         (Prefs.ShowWeaponsUnderPortraitMode == ShowWeaponsUnderPortraitMode.WhileDrafted &&
+                          colonist.Drafted)) &&
+                        (colonist.equipment?.Primary?.def?.IsWeapon ?? false))
+                        pos.y += 28f + Settings.OffsetEquippedExtra;
+#endif
+                HoveredPawn = colonist;
+                DrawCustomLabel(pos, colonist.CurrentTaskDesc(), Settings.CurrentTaskLabelColor, truncate: false,
+                    drawBg: Settings.DrawCurrentTaskBackground);
+                // pos += lineOffset;
+            }
+        }
+        catch (Exception e)
+        {
+            Log.Exception(e, "Current job label", true);
         }
     }
 }

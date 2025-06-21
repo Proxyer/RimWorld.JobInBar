@@ -259,5 +259,8 @@ __pycache__/
 Source/.vs/
 .vs/
 *.psd
-!*.dll
+*.dll
+*.pdb
+*.mdb
 Source/Art/
+*.csproj.user
